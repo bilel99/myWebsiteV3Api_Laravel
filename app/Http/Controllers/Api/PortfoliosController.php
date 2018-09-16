@@ -8,11 +8,15 @@ use App\Portfolio;
 use App\Http\Controllers\Controller;
 use App\PortfolioMedia;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class PortfoliosController extends Controller
 {
 
+    /**
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     */
     public function index() {
         $porfolios = Portfolio::with('media')->get();
         return response([
@@ -21,6 +25,10 @@ class PortfoliosController extends Controller
         ]);
     }
 
+    /**
+     * @param Portfolio $portfolio
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     */
     public function show(Portfolio $portfolio){
         $portfolio = Portfolio::with('media')->where('id', '=', $portfolio->id)->get();
         return response([
@@ -29,6 +37,10 @@ class PortfoliosController extends Controller
         ]);
     }
 
+    /**
+     * @param PortfoliosRequest $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     */
     public function store(PortfoliosRequest $request) {
         $portfolio = new Portfolio;
         $portfolio->user_id = $request->user_id;
@@ -45,6 +57,11 @@ class PortfoliosController extends Controller
         ], 200);
     }
 
+    /**
+     * @param PortfoliosRequest $request
+     * @param Portfolio $portfolio
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     */
     public function update(PortfoliosRequest $request, Portfolio $portfolio) {
         $portfolio->user_id = $request->user_id;
         $portfolio->titre = $request->titre;
@@ -60,6 +77,11 @@ class PortfoliosController extends Controller
         ], 200);
     }
 
+    /**
+     * @param Portfolio $portfolio
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     * @throws \Exception
+     */
     public function destroy(Portfolio $portfolio) {
         $portfolio->delete();
         return response([
@@ -68,6 +90,12 @@ class PortfoliosController extends Controller
         ], 200);
     }
 
+    /**
+     * Multiple File Upload
+     * @param Request $request
+     * @param Portfolio $portfolio
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     */
     public function uploadsPortfolio(Request $request, Portfolio $portfolio) {
         /*$this->validate($request, [
             'filename' => 'required',
@@ -99,14 +127,27 @@ class PortfoliosController extends Controller
         ], 200);
     }
 
-    public function getLastPortfolio(Portfolio $portfolio){
-        $portfolio = Portfolio::orderBy('id', 'desc')->limit(1)->get();
+    public function deleteImagePortfolio($pivotPortfolio) {
+
+    }
+
+    /**
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     */
+    public function getLastPortfolio(){
+        // information divers et varié sur la table format sql => SHOW TABLE STATUS FROM myWebsiteV3 LIKE 'portfolio'
+        $sql = DB::select('SHOW TABLE STATUS FROM myWebsiteV3 LIKE \'portfolio\'');
         return response([
-            'data' => $portfolio,
+            'data' => $sql[0],
             'status' => 200
         ], 200);
     }
 
+    /**
+     * @param Portfolio $portfolio
+     * @return $this
+     * @throws \Exception
+     */
     public function getPortfolioImage(Portfolio $portfolio) {
         $portfolio = Portfolio::with('media')->where('id', '=', $portfolio->id)->get();
         if($portfolio){

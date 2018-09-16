@@ -111,21 +111,59 @@ class AccountController extends Controller
             'filename.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
 
-        $destinationPath = public_path() . '/uploads/avatar/';
-        $fileName = 'avatar_' . strtotime('now') . '.' . $request->file('filename')->getClientOriginalExtension();
-        $request->file('filename')->move($destinationPath, $fileName);
+        // Remove File and Remove img row in Table *Media*
+        $relationUser = \App\User::with('media')->get();
+        if($relationUser[0]->media_id != NULL && $relationUser[0]->media_id != '' && $relationUser[0]->media->nom != 'default_avatar') {
+            // Remove file and table row Media and User
+            foreach($relationUser as $row){
+                $filename = explode('/' ,$row->media->filename);
+                $file = end($filename);
 
-        $media = new Media;
-        $media->nom = 'Avatar';
-        $media->filename = $request->root().'/uploads/avatar/'.''.$fileName;
-        $media->save();
+                $chemin = public_path() . '/uploads/avatar/'.$file;
+                if(file_exists($chemin)){
+                    unlink($chemin);
+                }
+                // Remove row in table media and replace field media_id = NULL
+                $media = \App\Media::where('id', '=', $user->media_id)->get();
+                $user->media_id = NULL;
+                $user->save();
+                $media[0]->delete();
+            }
 
-        $user->media_id = $media->id;
-        $user->save();
-        return response([
-            'data' => $media,
-            'status' => 200
-        ]);
+            // Upload New File
+            $destinationPath = public_path() . '/uploads/avatar/';
+            $fileName = 'avatar_' . strtotime('now') . '.' . $request->file('filename')->getClientOriginalExtension();
+            $request->file('filename')->move($destinationPath, $fileName);
+
+            $media = new Media;
+            $media->nom = 'Avatar';
+            $media->filename = $request->root().'/uploads/avatar/'.''.$fileName;
+            $media->save();
+
+            $user->media_id = $media->id;
+            $user->save();
+            return response([
+                'data' => $media,
+                'status' => 200
+            ]);
+        } else {
+            // Upload Avatar file
+            $destinationPath = public_path() . '/uploads/avatar/';
+            $fileName = 'avatar_' . strtotime('now') . '.' . $request->file('filename')->getClientOriginalExtension();
+            $request->file('filename')->move($destinationPath, $fileName);
+
+            $media = new Media;
+            $media->nom = 'Avatar';
+            $media->filename = $request->root().'/uploads/avatar/'.''.$fileName;
+            $media->save();
+
+            $user->media_id = $media->id;
+            $user->save();
+            return response([
+                'data' => $media,
+                'status' => 200
+            ]);
+        }
     }
 
     public function getAvatar(User $user, Request $request){

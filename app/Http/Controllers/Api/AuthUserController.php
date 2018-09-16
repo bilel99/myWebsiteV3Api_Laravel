@@ -7,6 +7,7 @@ use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\ResetPasswordRequest;
 use App\Mail\ForgotPassStep1Mail;
+use App\Media;
 use App\User;
 use Illuminate\Support\Facades\Mail;
 
@@ -21,12 +22,25 @@ class AuthUserController extends Controller {
         $user = new User;
 
         $req = User::where('email', $request->email)->count();
-        if($req == 0){
+        if($req === 0){
             $user->nom = $request->nom;
             $user->prenom = $request->prenom;
             $user->email = $request->email;
             $user->role_id = 1;
             $user->password = \Hash::make($request->password.\Config::get('const.salt'));
+
+            /* Upload Avatar par default
+            pour un utilisateur
+            Vérification dans dossier
+            'public/uploads/avatar/"default_avatar.jpg"'
+            existe */
+
+            $media = new Media;
+            $media->nom = 'default_avatar';
+            $media->filename = $request->root().'/uploads/avatar/default_avatar.jpg';
+            $media->save();
+            $user->media_id = $media->id;
+
             $user->save();
             return response([
                 'data' => $user,
@@ -61,7 +75,7 @@ class AuthUserController extends Controller {
             ]);
         } else {
             return response([
-                'error' => 'Email ou Mot de passe incorrect !',
+                'error' => 'Error Authentification!',
                 'status' => 300
             ]);
         }
@@ -105,7 +119,7 @@ class AuthUserController extends Controller {
         }else{
             return response([
                 'error' => 'Erreur lors de l\'envoie du mail',
-                'status' => '200'
+                'status' => '300'
             ]);
         }
     }
