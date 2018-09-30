@@ -90,28 +90,116 @@ class PortfoliosController extends Controller
         ], 200);
     }
 
+    public function removeImagesPortfolio(Request $request, Portfolio $portfolio, $number_filename){
+        if($number_filename < 1 || $number_filename > 3){
+            return response([
+                'error' => true,
+                'status' => 300,
+                'message' => 'number_filename doit être compris entre 1 et 3'
+            ], 300);
+        } else {
+            $portfolio = Portfolio::with('media')->where('id', '=', $portfolio->id)->get();
+            switch($number_filename){
+                case 1:
+                    // Récupération du nom de l'image
+                    $filename = explode('/' , $portfolio[0]->media[0]->filename);
+                    $file = end($filename);
+                    // Suppression de l'image sur les server
+                    $chemin = public_path() . '/uploads/portfolios/'.$file;
+                    if($chemin != public_path() . '/uploads/portfolios/default_portfolio.png') {
+                        if (file_exists($chemin)) {
+                            unlink($chemin);
+                        }
+                    }
+                    // Update du media en BDD
+                    $media = Media::where('id', '=', $portfolio[0]->media[0]->id)->get();
+                    $media[0]->filename = $request->root() . '/uploads/portfolios/' . 'default_portfolio.png';
+                    $media[0]->save();
+
+                    return response([
+                        'media' => $media[0],
+                        'portfolio' => $portfolio,
+                        'status' => 200,
+                        'message' => 'media deleted!'
+                    ], 200);
+                    break;
+                case 2:
+                    // Récupération du nom de l'image
+                    $filename = explode('/' , $portfolio[0]->media[1]->filename);
+                    $file = end($filename);
+                    // Suppression de l'image sur les server
+                    $chemin = public_path() . '/uploads/portfolios/'.$file;
+                    if($chemin != public_path() . '/uploads/portfolios/default_portfolio.png') {
+                        if (file_exists($chemin)) {
+                            unlink($chemin);
+                        }
+                    }
+                    // Update du media en BDD
+                    $media = Media::where('id', '=', $portfolio[0]->media[1]->id)->get();
+                    $media[0]->filename = $request->root() . '/uploads/portfolios/' . 'default_portfolio.png';
+                    $media[0]->save();
+
+                    return response([
+                        'media' => $media[0],
+                        'portfolio' => $portfolio,
+                        'status' => 200,
+                        'message' => 'media deleted!'
+                    ], 200);
+                    break;
+                case 3:
+                    // Récupération du nom de l'image
+                    $filename = explode('/' , $portfolio[0]->media[2]->filename);
+                    $file = end($filename);
+                    // Suppression de l'image sur les server
+                    $chemin = public_path() . '/uploads/portfolios/'.$file;
+                    if($chemin != public_path() . '/uploads/portfolios/default_portfolio.png') {
+                        if (file_exists($chemin)) {
+                            unlink($chemin);
+                        }
+                    }
+                    // Update du media en BDD
+                    $media = Media::where('id', '=', $portfolio[0]->media[2]->id)->get();
+                    $media[0]->filename = $request->root() . '/uploads/portfolios/' . 'default_portfolio.png';
+                    $media[0]->save();
+
+                    return response([
+                        'media' => $media[0],
+                        'portfolio' => $portfolio,
+                        'status' => 200,
+                        'message' => 'media deleted!'
+                    ], 200);
+                    break;
+                default:
+                    return response([
+                        'error' => true,
+                        'status' => 300,
+                        'message' => 'number_filename doit être compris entre 1 et 3'
+                    ], 300);
+                    break;
+            }
+        }
+    }
+
     /**
      * Multiple File Upload
      * @param Request $request
      * @param Portfolio $portfolio
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
      */
-    public function uploadsPortfolio(Request $request, Portfolio $portfolio) {
-        /*$this->validate($request, [
-            'filename' => 'required',
-            'filename.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
-        ]);*/
-        foreach($request->all() as $file){
+    public function uploadsPortfolio(Request $request, Portfolio $portfolio)
+    {
+        // Upload Portfolios Files
+        foreach ($request->all() as $file) {
             $destinationPath = public_path() . '/uploads/portfolios/';
-            $fileName = 'portfolios_'. strtotime('now') . '_' . $file->getClientOriginalName();
+            $fileName = 'portfolios_' . strtotime('now') . '_' . $file->getClientOriginalName();
             $file->move($destinationPath, $fileName);
             $data[] = $fileName;
         }
 
-        foreach($data as $key => $item){
+        foreach ($data as $key => $item) {
             $media = new Media;
             $media->nom = 'Portfolios';
-            $media->filename = $request->root().'/uploads/portfolios/'.''.$item;
+            $media->filename = $request->root() . '/uploads/portfolios/' . '' . $item;
             $media->save();
 
             $portfolioMedia = new PortfolioMedia;
@@ -119,16 +207,11 @@ class PortfoliosController extends Controller
             $portfolioMedia->media_id = $media->id;
             $portfolioMedia->save();
         }
-
         return response([
             'media' => $media,
             'portfolioMedia' => $portfolioMedia,
             'status' => 200
         ], 200);
-    }
-
-    public function deleteImagePortfolio($pivotPortfolio) {
-
     }
 
     /**
@@ -153,7 +236,7 @@ class PortfoliosController extends Controller
         if($portfolio){
             foreach($portfolio as $p){
                 foreach($p->media as $m){
-                    $image = array(
+                    $image[] = array(
                         'portfolio_id' => $m->pivot->portfolio_id,
                         'media_id' => $m->pivot->media_id,
                         'media_nom' => $m->nom,
