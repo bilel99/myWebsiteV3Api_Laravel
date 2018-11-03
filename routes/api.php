@@ -36,6 +36,7 @@ Route::post('/create-portfolio', 'Api\PortfoliosController@store');
 Route::get('/getLastPortfolio', 'Api\PortfoliosController@getLastPortfolio');
 Route::put('/edit-portfolio/{portfolio}', 'Api\PortfoliosController@update');
 Route::delete('/delete-portfolio/{portfolio}', 'Api\PortfoliosController@destroy');
+Route::post('/edit-upload-portfolio/{portfolio}/{number_filename}', 'Api\PortfoliosController@editUploadsPortfolio');
 Route::post('/uploads-portfolio/{portfolio}', 'Api\PortfoliosController@uploadsPortfolio');
 Route::get('/getPortfolioImage/{portfolio}', 'Api\PortfoliosController@getPortfolioImage');
 Route::delete('/remove-images-portfolio/{portfolio}/{number_filename}', 'Api\PortfoliosController@removeImagesPortfolio');

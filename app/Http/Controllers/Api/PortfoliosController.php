@@ -186,20 +186,152 @@ class PortfoliosController extends Controller
      * @param Portfolio $portfolio
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
      */
-    public function uploadsPortfolio(Request $request, Portfolio $portfolio)
+    public function editUploadsPortfolio(Request $request, Portfolio $portfolio, $number_filename)
     {
-        // Upload Portfolios Files
-        foreach ($request->all() as $file) {
+        $portfolio = Portfolio::with('media')->where('id', '=', $portfolio->id)->get();
+
+        if(count($portfolio[0]->media) === 0){
+            // Upload Portfolios Files
+            foreach ($request->all() as $file) {
+                $destinationPath = public_path() . '/uploads/portfolios/';
+                $fileName = 'portfolios_' . strtotime('now') . '_' . $file->getClientOriginalName();
+                $file->move($destinationPath, $fileName);
+                $data[] = $fileName;
+            }
+
+            foreach ($data as $key => $item) {
+                $media = new Media;
+                $media->nom = 'Portfolios';
+                $media->filename = $request->root() . '/uploads/portfolios/' . '' . $item;
+                $media->save();
+
+                $portfolioMedia = new PortfolioMedia;
+                $portfolioMedia->portfolio_id = $portfolio[0]->id;
+                $portfolioMedia->media_id = $media->id;
+                $portfolioMedia->save();
+            }
+            return response([
+                'media' => $media,
+                'portfolioMedia' => $portfolioMedia,
+                'status' => 200
+            ], 200);
+
+        } else {
+            $field = $request->file();
+
+            switch($number_filename){
+                case 1:
+                    // Récupération du nom de l'image
+                    $filename = explode('/', $portfolio[0]->media[0]->filename);
+                    $file = end($filename);
+                    // Suppression de l'image sur les server
+                    $chemin = public_path() . '/uploads/portfolios/' . $file;
+                    if ($chemin != public_path() . '/uploads/portfolios/default_portfolio.png') {
+                        if (file_exists($chemin)) {
+                            unlink($chemin);
+                        }
+                    }
+
+                    // Upload Portfolios Files
+                    $destinationPath = public_path() . '/uploads/portfolios/';
+                    $fileName = 'portfolios_' . strtotime('now') . '_' . $field['filename']->getClientOriginalName();
+                    $field['filename']->move($destinationPath, $fileName);
+
+
+                    // Update du media en BDD
+                    $media = Media::where('id', '=', $portfolio[0]->media[0]->id)->get();
+                    $media[0]->filename = $request->root() . '/uploads/portfolios/' . $fileName;
+                    $media[0]->save();
+
+                    return response([
+                        'media' => $media[0],
+                        'status' => 200
+                    ], 200);
+                    break;
+                case 2:
+                    // Récupération du nom de l'image
+                    $filename = explode('/', $portfolio[0]->media[0]->filename);
+                    $file = end($filename);
+                    // Suppression de l'image sur les server
+                    $chemin = public_path() . '/uploads/portfolios/' . $file;
+                    if ($chemin != public_path() . '/uploads/portfolios/default_portfolio.png') {
+                        if (file_exists($chemin)) {
+                            unlink($chemin);
+                        }
+                    }
+
+                    // Upload Portfolios Files
+                    $destinationPath = public_path() . '/uploads/portfolios/';
+                    $fileName = 'portfolios_' . strtotime('now') . '_' . $field['filename2']->getClientOriginalName();
+                    $field['filename2']->move($destinationPath, $fileName);
+
+
+                    // Update du media en BDD
+                    $media = Media::where('id', '=', $portfolio[0]->media[0]->id)->get();
+                    $media[0]->filename = $request->root() . '/uploads/portfolios/' . $fileName;
+                    $media[0]->save();
+
+                    return response([
+                        'media' => $media[0],
+                        'status' => 200
+                    ], 200);
+                    break;
+                case 3:
+                    // Récupération du nom de l'image
+                    $filename = explode('/', $portfolio[0]->media[0]->filename);
+                    $file = end($filename);
+                    // Suppression de l'image sur les server
+                    $chemin = public_path() . '/uploads/portfolios/' . $file;
+                    if ($chemin != public_path() . '/uploads/portfolios/default_portfolio.png') {
+                        if (file_exists($chemin)) {
+                            unlink($chemin);
+                        }
+                    }
+
+                    // Upload Portfolios Files
+                    $destinationPath = public_path() . '/uploads/portfolios/';
+                    $fileName = 'portfolios_' . strtotime('now') . '_' . $field['filename3']->getClientOriginalName();
+                    $field['filename3']->move($destinationPath, $fileName);
+
+
+                    // Update du media en BDD
+                    $media = Media::where('id', '=', $portfolio[0]->media[0]->id)->get();
+                    $media[0]->filename = $request->root() . '/uploads/portfolios/' . $fileName;
+                    $media[0]->save();
+
+                    return response([
+                        'media' => $media[0],
+                        'status' => 200
+                    ], 200);
+                    break;
+                default:
+                    return response([
+                        'error' => true,
+                        'status' => 300,
+                        'message' => 'number_filename doit être compris entre 1 et 3'
+                    ], 300);
+                    break;
+            }
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @param Portfolio $portfolio
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     */
+    public function uploadsPortfolio(Request $request, Portfolio $portfolio) {
+        foreach($request->all() as $file){
             $destinationPath = public_path() . '/uploads/portfolios/';
-            $fileName = 'portfolios_' . strtotime('now') . '_' . $file->getClientOriginalName();
+            $fileName = 'portfolios_'. strtotime('now') . '_' . $file->getClientOriginalName();
             $file->move($destinationPath, $fileName);
             $data[] = $fileName;
         }
 
-        foreach ($data as $key => $item) {
+        foreach($data as $key => $item){
             $media = new Media;
             $media->nom = 'Portfolios';
-            $media->filename = $request->root() . '/uploads/portfolios/' . '' . $item;
+            $media->filename = $request->root().'/uploads/portfolios/'.''.$item;
             $media->save();
 
             $portfolioMedia = new PortfolioMedia;
@@ -207,6 +339,7 @@ class PortfoliosController extends Controller
             $portfolioMedia->media_id = $media->id;
             $portfolioMedia->save();
         }
+
         return response([
             'media' => $media,
             'portfolioMedia' => $portfolioMedia,
