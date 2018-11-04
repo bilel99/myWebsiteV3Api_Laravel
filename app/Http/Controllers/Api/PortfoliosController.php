@@ -83,9 +83,30 @@ class PortfoliosController extends Controller
      * @throws \Exception
      */
     public function destroy(Portfolio $portfolio) {
-        $portfolio->delete();
+        /* Suppression des images en bdd,
+         * table media + fichier **/
+        $portfolio = Portfolio::with('media')->where('id', '=', $portfolio->id)->get();
+        if(count($portfolio[0]->media) > 0){
+            foreach($portfolio[0]->media as $key => $row){
+                // Récupération du nom de l'image
+                $filename = explode('/' , $row->filename);
+                $file = end($filename);
+                // Suppression de l'image sur les server
+                $chemin = public_path() . '/uploads/portfolios/'.$file;
+                if($chemin != public_path() . '/uploads/portfolios/default_portfolio.png') {
+                    if (file_exists($chemin)) {
+                        unlink($chemin);
+                    }
+                }
+                // Delete du media en BDD
+                $media = Media::where('id', '=', $row->id)->get();
+                $media[0]->delete();
+            }
+        }
+        $portfolio[0]->delete();
         return response([
-            'data' => $portfolio,
+            'data' => $portfolio[0],
+            'message' => 'portfolio deleted and media deleted!',
             'status' => 200
         ], 200);
     }
