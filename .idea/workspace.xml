@@ -2,8 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="33e7cf6d-3c57-47fc-aef2-efe23ee78bc0" name="Default" comment="">
+      <change type="DELETED" beforePath="$PROJECT_DIR$/public/uploads/portfolios/portfolios_1541251252_autodrive.PNG" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/public/uploads/portfolios/portfolios_1541255731_12pio8nfrj08fq92505d39777afxzzuelyir0lrlo7osulp0m8.jpeg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/public/uploads/portfolios/portfolios_1541255731_default.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/public/uploads/portfolios/portfolios_1541255731_jeux JS.png" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Http/Controllers/Api/PortfoliosController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/Api/PortfoliosController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/routes/api.php" afterPath="$PROJECT_DIR$/routes/api.php" />
     </list>
     <ignored path="myWebsiteV3Api_Laravel.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -28,8 +31,8 @@
       <file leaf-file-name="PortfoliosController.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Api/PortfoliosController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.8888889">
-              <caret line="187" column="7" selection-start-line="187" selection-start-column="7" selection-end-line="187" selection-end-column="7" />
+            <state vertical-scroll-proportion="0.11111111">
+              <caret line="251" column="20" selection-start-line="251" selection-start-column="20" selection-end-line="251" selection-end-column="20" />
               <folding>
                 <element signature="e#44#84#0#PHP" expanded="true" />
               </folding>
@@ -114,8 +117,8 @@
         <option value="$PROJECT_DIR$/app/Portfolio.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/Api/AuthUserController.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/Api/AccountController.php" />
-        <option value="$PROJECT_DIR$/app/Http/Controllers/Api/PortfoliosController.php" />
         <option value="$PROJECT_DIR$/routes/api.php" />
+        <option value="$PROJECT_DIR$/app/Http/Controllers/Api/PortfoliosController.php" />
       </list>
     </option>
   </component>
@@ -672,16 +675,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Api/AuthUserController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#43#79#0#PHP" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/vendor/laravel/framework/src/Illuminate/Auth/Middleware/Authenticate.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.26086956">
@@ -1037,8 +1030,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Api/PortfoliosController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.8888889">
-          <caret line="187" column="7" selection-start-line="187" selection-start-column="7" selection-end-line="187" selection-end-column="7" />
+        <state vertical-scroll-proportion="0.11111111">
+          <caret line="251" column="20" selection-start-line="251" selection-start-column="20" selection-end-line="251" selection-end-column="20" />
           <folding>
             <element signature="e#44#84#0#PHP" expanded="true" />
           </folding>

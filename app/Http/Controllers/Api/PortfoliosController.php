@@ -250,7 +250,7 @@ class PortfoliosController extends Controller
                     break;
                 case 2:
                     // Récupération du nom de l'image
-                    $filename = explode('/', $portfolio[0]->media[0]->filename);
+                    $filename = explode('/', $portfolio[0]->media[1]->filename);
                     $file = end($filename);
                     // Suppression de l'image sur les server
                     $chemin = public_path() . '/uploads/portfolios/' . $file;
@@ -267,7 +267,7 @@ class PortfoliosController extends Controller
 
 
                     // Update du media en BDD
-                    $media = Media::where('id', '=', $portfolio[0]->media[0]->id)->get();
+                    $media = Media::where('id', '=', $portfolio[0]->media[1]->id)->get();
                     $media[0]->filename = $request->root() . '/uploads/portfolios/' . $fileName;
                     $media[0]->save();
 
@@ -278,7 +278,7 @@ class PortfoliosController extends Controller
                     break;
                 case 3:
                     // Récupération du nom de l'image
-                    $filename = explode('/', $portfolio[0]->media[0]->filename);
+                    $filename = explode('/', $portfolio[0]->media[2]->filename);
                     $file = end($filename);
                     // Suppression de l'image sur les server
                     $chemin = public_path() . '/uploads/portfolios/' . $file;
@@ -295,7 +295,7 @@ class PortfoliosController extends Controller
 
 
                     // Update du media en BDD
-                    $media = Media::where('id', '=', $portfolio[0]->media[0]->id)->get();
+                    $media = Media::where('id', '=', $portfolio[0]->media[2]->id)->get();
                     $media[0]->filename = $request->root() . '/uploads/portfolios/' . $fileName;
                     $media[0]->save();
 
