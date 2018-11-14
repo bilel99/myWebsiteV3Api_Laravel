@@ -12,6 +12,7 @@ class CvCompetenceLangue extends Model
      */
     protected $table = 'cv_competence_langue';
     protected $guarded = [];
+    public $timestamps = false;
 
     /**
      * @return bool|string

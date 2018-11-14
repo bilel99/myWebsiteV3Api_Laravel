@@ -12,6 +12,7 @@ class CvMedia extends Model
      */
     protected $table = 'cv_media';
     protected $guarded = [];
+    public $timestamps = false;
 
     /**
      * @return bool|string

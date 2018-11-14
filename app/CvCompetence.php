@@ -12,6 +12,7 @@ class CvCompetence extends Model
      */
     protected $table = 'cv_competence';
     protected $guarded = [];
+    public $timestamps = false;
 
     /**
      * @return bool|string

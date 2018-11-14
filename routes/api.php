@@ -40,3 +40,14 @@ Route::post('/edit-upload-portfolio/{portfolio}/{number_filename}', 'Api\Portfol
 Route::post('/uploads-portfolio/{portfolio}', 'Api\PortfoliosController@uploadsPortfolio');
 Route::get('/getPortfolioImage/{portfolio}', 'Api\PortfoliosController@getPortfolioImage');
 Route::delete('/remove-images-portfolio/{portfolio}/{number_filename}', 'Api\PortfoliosController@removeImagesPortfolio');
+// CV
+Route::get('/cv', 'Api\CvController@index');
+Route::get('/cv/{cv}', 'Api\CvController@show');
+Route::post('/create-groupe-competence', 'Api\CvController@addCompetenceGroup');
+Route::put('/edit-groupe-competence/{competenceGroup}', 'Api\CvController@updateCompetenceGroup');
+Route::get('/competence-groupe', 'Api\CvController@getCompetenceGroup');
+Route::get('/competence-groupe/{competenceGroup}', 'Api\CvController@showCompetenceGroup');
+Route::post('/create-cv', 'Api\CvController@store');
+Route::put('/edit-cv/{cv}', 'Api\CvController@update');
+Route::post('/upload-cv/{cv}', 'Api\CvController@uploadFile');
+Route::delete('/delete-cv/{cv}', 'Api\CvController@destroy');

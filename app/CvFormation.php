@@ -12,6 +12,7 @@ class CvFormation extends Model
      */
     protected $table = 'cv_formation';
     protected $guarded = [];
+    public $timestamps = false;
 
     /**
      * @return bool|string

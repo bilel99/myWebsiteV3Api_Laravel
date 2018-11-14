@@ -12,6 +12,7 @@ class CvLoisir extends Model
      */
     protected $table = 'cv_loisir';
     protected $guarded = [];
+    public $timestamps = false;
 
     /**
      * @return bool|string

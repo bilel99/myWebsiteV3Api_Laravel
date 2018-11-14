@@ -12,6 +12,7 @@ class CvExperience extends Model
      */
     protected $table = 'cv_experience';
     protected $guarded = [];
+    public $timestamps = false;
 
     /**
      * @return bool|string
