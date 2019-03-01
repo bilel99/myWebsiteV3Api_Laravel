@@ -13,6 +13,10 @@ class Competence extends Model
     protected $table = 'competence';
     protected $guarded = [];
 
+    public function groupCompetence(){
+        return $this->belongsTo('\App\CompetenceGroup', 'competenceGroup_id');
+    }
+
     /**
      * @return bool|string
      */
