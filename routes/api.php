@@ -68,7 +68,7 @@ Route::get('/blog', 'Api\BlogController@index');
 Route::post('/create-blog', 'Api\BlogController@store');
 Route::get('/blog/{blog}', 'Api\BlogController@show');
 Route::put('/edit-blog/{blog}', 'Api\BlogController@update');
-Route::delete('/delete-blog', 'Api\BlogController@destroy');
+Route::delete('/delete-blog/{blog}', 'Api\BlogController@destroy');
 Route::post('/edit-upload-blog/{blog}/{number_filename}', 'Api\BlogController@editUploadsBlog');
 Route::post('/uploads-blog/{blog}', 'Api\BlogController@uploadsBlog');
 Route::get('/getBlogMedia/{blog}', 'Api\BlogController@getBlogMedia');
