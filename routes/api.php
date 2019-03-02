@@ -63,3 +63,10 @@ Route::delete('/remove-experience/{experience}', 'Api\CvController@removeExperie
 Route::delete('/remove-competence-langue/{competenceLangue}', 'Api\CvController@removeCompetenceLangue');
 Route::delete('/remove-loisir/{loisir}', 'Api\CvController@removeLoisir');
 Route::delete('/delete-cv/{cv}', 'Api\CvController@destroy');
+
+// BLOG
+Route::get('/blog', 'Api\BlogController@index');
+Route::post('/create-blog', 'Api\BlogController@store');
+Route::get('/blog/{blog}', 'Api\BlogController@show');
+Route::update('/edit-blog/{blog}', 'Api\BlogController@update');
+Route::delete('/delete-blog', 'Api\BlogController@destroy');
