@@ -21,7 +21,7 @@ class Blog extends Model
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function users(){
-        return $this->belongsTo('\App\Users', 'users_id');
+        return $this->belongsTo('\App\User', 'users_id');
     }
 
     /**

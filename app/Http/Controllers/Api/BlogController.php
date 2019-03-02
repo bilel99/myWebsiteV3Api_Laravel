@@ -10,9 +10,12 @@ namespace App\Http\Controllers\Api;
 
 
 use App\Blog;
+use App\Media;
 use App\BlogMedia;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\BlogRequest;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class BlogController extends Controller {
 
@@ -138,10 +141,9 @@ class BlogController extends Controller {
                             unlink($chemin);
                         }
                     }
-                    // Update du media en BDD
+                    // Delete du media en BDD
                     $media = Media::where('id', '=', $blog[0]->media[0]->id)->get();
-                    $media[0]->filename = $request->root() . '/uploads/blog/' . 'default_blog.png';
-                    $media[0]->save();
+                    $media[0]->delete();
 
                     return response([
                         'media' => $media[0],
@@ -163,8 +165,7 @@ class BlogController extends Controller {
                     }
                     // Update du media en BDD
                     $media = Media::where('id', '=', $blog[0]->media[1]->id)->get();
-                    $media[0]->filename = $request->root() . '/uploads/blog/' . 'default_blog.png';
-                    $media[0]->save();
+                    $media[0]->delete();
 
                     return response([
                         'media' => $media[0],
@@ -186,8 +187,7 @@ class BlogController extends Controller {
                     }
                     // Update du media en BDD
                     $media = Media::where('id', '=', $blog[0]->media[2]->id)->get();
-                    $media[0]->filename = $request->root() . '/uploads/blog/' . 'default_blog.png';
-                    $media[0]->save();
+                    $media[0]->delete();
 
                     return response([
                         'media' => $media[0],
