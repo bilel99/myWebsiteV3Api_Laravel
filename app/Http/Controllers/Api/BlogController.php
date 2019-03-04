@@ -264,7 +264,6 @@ class BlogController extends Controller {
                     $fileName = 'blog_' . strtotime('now') . '_' . $field['filename']->getClientOriginalName();
                     $field['filename']->move($destinationPath, $fileName);
 
-
                     // Update du media en BDD
                     $media = Media::where('id', '=', $blog[0]->media[0]->id)->get();
                     $media[0]->filename = $request->root() . '/uploads/blog/' . $fileName;
@@ -292,7 +291,6 @@ class BlogController extends Controller {
                     $fileName = 'blog_' . strtotime('now') . '_' . $field['filename2']->getClientOriginalName();
                     $field['filename2']->move($destinationPath, $fileName);
 
-
                     // Update du media en BDD
                     $media = Media::where('id', '=', $blog[0]->media[1]->id)->get();
                     $media[0]->filename = $request->root() . '/uploads/blog/' . $fileName;
@@ -319,7 +317,6 @@ class BlogController extends Controller {
                     $destinationPath = public_path() . '/uploads/blog/';
                     $fileName = 'blog_' . strtotime('now') . '_' . $field['filename3']->getClientOriginalName();
                     $field['filename3']->move($destinationPath, $fileName);
-
 
                     // Update du media en BDD
                     $media = Media::where('id', '=', $blog[0]->media[2]->id)->get();
