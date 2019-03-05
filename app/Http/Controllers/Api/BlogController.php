@@ -217,37 +217,11 @@ class BlogController extends Controller {
     {
         $blog = Blog::with('media')->where('id', '=', $blog->id)->get();
 
-        if(count($blog[0]->media) === 0){
-            // Upload Blog Files
-            foreach ($request->all() as $file) {
-                $destinationPath = public_path() . '/uploads/blog/';
-                $fileName = 'blog_' . strtotime('now') . '_' . $file->getClientOriginalName();
-                $file->move($destinationPath, $fileName);
-                $data[] = $fileName;
-            }
-
-            foreach ($data as $key => $item) {
-                $media = new Media;
-                $media->nom = 'Blog';
-                $media->filename = $request->root() . '/uploads/blog/' . '' . $item;
-                $media->save();
-
-                $blogMedia = new BlogMedia;
-                $blogMedia->blog_id = $blog[0]->id;
-                $blogMedia->media_id = $media->id;
-                $blogMedia->save();
-            }
-            return response([
-                'media' => $media,
-                'blogMedia' => $blogMedia,
-                'status' => 200
-            ], 200);
-
-        } else {
-            $field = $request->file();
-
-            switch($number_filename){
-                case 1:
+        $field = $request->file();
+        switch($number_filename){
+            case 1:
+                // Vérification
+                if(isset($blog[0]->media[0])){
                     // Récupération du nom de l'image
                     $filename = explode('/', $blog[0]->media[0]->filename);
                     $file = end($filename);
@@ -274,10 +248,37 @@ class BlogController extends Controller {
                         'status' => 200
                     ], 200);
                     break;
-                case 2:
+                } else {
+                    // Upload Blog Files
+                    $destinationPath = public_path() . '/uploads/blog/';
+                    $fileName = 'blog_' . strtotime('now') . '_' . $field['filename']->getClientOriginalName();
+                    $field['filename']->move($destinationPath, $fileName);
+
+                    // Update du media en BDD
+                    $media = new Media;
+                    $media->nom = 'Blog';
+                    $media->filename = $request->root() . '/uploads/blog/' . '' . $fileName;
+                    $media->save();
+
+                    $blogMedia = new BlogMedia;
+                    $blogMedia->blog_id = $blog[0]->id;
+                    $blogMedia->media_id = $media->id;
+                    $blogMedia->save();
+
+                    return response([
+                        'media' => $media,
+                        'blogMedia' => $blogMedia,
+                        'status' => 200
+                    ], 200);
+                    break;
+                }
+            case 2:
+                // Vérification
+                if(isset($blog[0]->media[1])){
                     // Récupération du nom de l'image
                     $filename = explode('/', $blog[0]->media[1]->filename);
                     $file = end($filename);
+
                     // Suppression de l'image sur les server
                     $chemin = public_path() . '/uploads/blog/' . $file;
                     if ($chemin != public_path() . '/uploads/blog/default_blog.png') {
@@ -301,7 +302,33 @@ class BlogController extends Controller {
                         'status' => 200
                     ], 200);
                     break;
-                case 3:
+                } else {
+                    // Upload Blog Files
+                    $destinationPath = public_path() . '/uploads/blog/';
+                    $fileName = 'blog_' . strtotime('now') . '_' . $field['filename2']->getClientOriginalName();
+                    $field['filename2']->move($destinationPath, $fileName);
+
+                    // Update du media en BDD
+                    $media = new Media;
+                    $media->nom = 'Blog';
+                    $media->filename = $request->root() . '/uploads/blog/' . '' . $fileName;
+                    $media->save();
+
+                    $blogMedia = new BlogMedia;
+                    $blogMedia->blog_id = $blog[0]->id;
+                    $blogMedia->media_id = $media->id;
+                    $blogMedia->save();
+
+                    return response([
+                        'media' => $media,
+                        'blogMedia' => $blogMedia,
+                        'status' => 200
+                    ], 200);
+                    break;
+                }
+            case 3:
+                // Vérification
+                if(isset($blog[0]->media[2])){
                     // Récupération du nom de l'image
                     $filename = explode('/', $blog[0]->media[2]->filename);
                     $file = end($filename);
@@ -328,14 +355,37 @@ class BlogController extends Controller {
                         'status' => 200
                     ], 200);
                     break;
-                default:
+                } else {
+                    // Upload Blog Files
+                    $destinationPath = public_path() . '/uploads/blog/';
+                    $fileName = 'blog_' . strtotime('now') . '_' . $field['filename3']->getClientOriginalName();
+                    $field['filename3']->move($destinationPath, $fileName);
+
+                    // Update du media en BDD
+                    $media = new Media;
+                    $media->nom = 'Blog';
+                    $media->filename = $request->root() . '/uploads/blog/' . '' . $fileName;
+                    $media->save();
+
+                    $blogMedia = new BlogMedia;
+                    $blogMedia->blog_id = $blog[0]->id;
+                    $blogMedia->media_id = $media->id;
+                    $blogMedia->save();
+
                     return response([
-                        'error' => true,
-                        'status' => 300,
-                        'message' => 'number_filename doit être compris entre 1 et 3'
-                    ], 300);
+                        'media' => $media,
+                        'blogMedia' => $blogMedia,
+                        'status' => 200
+                    ], 200);
                     break;
-            }
+                }
+            default:
+                return response([
+                    'error' => true,
+                    'status' => 300,
+                    'message' => 'number_filename doit être compris entre 1 et 3'
+                ], 300);
+                break;
         }
     }
 
